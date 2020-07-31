@@ -4,11 +4,10 @@ include './Service/moduloService.php';
 
 $accion="Agregar";
 $nombre="";
-$genero="";
-$plataforma="";
-$precio="";   
-$codVideojuego=""; 
-$hidden="hidden";                      
+$url="";
+$descripcion="";
+$codModulo="";   
+                  
 //echo "Éxito: Se realizó una conexión apropiada a MySQL! La base de datos mi_bd es genial." . PHP_EOL;
 //echo "Información del host: " . mysqli_get_host_info($conection) . PHP_EOL;
 if (isset($_POST["nombre"])&&isset($_POST["url"])&&isset($_POST["descripcion"])&&isset($_POST["COD_MODULO"])&&$_POST["accion"]=="Agregar")
@@ -17,7 +16,7 @@ if (isset($_POST["nombre"])&&isset($_POST["url"])&&isset($_POST["descripcion"])&
     
     
 }
-else if (isset($_POST["nombre"])&&isset($_POST["url"])&&isset($_POST["descripcion"])&&isset($_POST["COD_MODULO"]))&&$_POST["accion"]=="Modificar"){
+else if (isset($_POST["nombre"])&&isset($_POST["url"])&&isset($_POST["descripcion"])&&isset($_POST["COD_MODULO"])&&$_POST["accion"]=="Modificar"){
 
     modifyFuncionaldiad($_POST["COD_MODULO"],$_POST["nombre"],$_POST["url"],$_POST["descripcion"],$_POST["COD_FUNCIONALIDAD"]);
 }
@@ -27,12 +26,10 @@ if(isset($_GET["update"]))
     if ($result->num_rows > 0) {
         $row1=$result->fetch_assoc();
         $nombre=$row1["nombre"];
-        $genero=$row1["genero"];
-        $plataforma=$row1["plataforma"];
-        $precio=$row1["precio"];
-        $codVideojuego=$row1["cod_videojuego"];
+        $url=$row1["url"];
+        $descripcion=$row1["descripcion"];
+        $codModulo=$row1["codModulo"];
         $accion="Modificar";
-        $hidden="";
     }
 }
 if(isset($_GET["delete"]))
@@ -102,8 +99,8 @@ if(isset($_GET["delete"]))
                                 <td><?php echo $row['NOMBRE']; ?></td>
                                 <td><?php echo $row['URL_PRINCIPAL']; ?></td>
                                 <td><?php echo $row['DESCRIPCION']; ?></td>
-                                <td><a href="index.php?update= <?php echo $row["cod_videojuego"];?>#insertar"><img class="img-small" src="assets/img/update.png" style="width:25px;height:25px;" alt="" /></a></td>
-                                <td><a href="index.php?delete= <?php echo $row["cod_videojuego"];?>"><img class="img-small" src="assets/img/delete.png" style="width:25px;height:25px;" alt="" /></a></td>
+                                <td><a href="index.php?update= <?php echo $row["COD_FUNCIONALIDAD"];?>#insertar"><img class="img-small" src="assets/img/update.png" style="width:25px;height:25px;" alt="" /></a></td>
+                                <td><a href="index.php?delete= <?php echo $row["COD_FUNCIONALIDAD"];?>"><img class="img-small" src="assets/img/delete.png" style="width:25px;height:25px;" alt="" /></a></td>
                             </tr>
                             <?php }
                             }?>
@@ -130,7 +127,7 @@ if(isset($_GET["delete"]))
                                 <input type="text" id="url" name="url" value="<?php echo $url; ?>" required><br>
                                 <label for="url">Descripcion:</label><br>
                                 <input type="text" id="descripcion" name="descripcion" value="<?php echo $descripcion; ?>" required><br>
-                                <select id="segRol" name="segRol">
+                                <label for="segModulo">Modulo:</label><br>
                                 <?php 
                                 $result = findSegModulo();
                                 if ($result->num_rows > 0) {
@@ -141,18 +138,8 @@ if(isset($_GET["delete"]))
                                     <?php }
                             }?>
                                 </select><br><br>
-                                <label for="segModulo">Modulo:</label><br>
-                                <select id="segModulo" name="segModulo">
-                                <?php 
-                                $result = findSegModulo();
-                                if ($result->num_rows > 0) {
-                                    // output data of each row
-                                    while($row = $result->fetch_assoc()) {
-                                ?>
-                                    <option value="<?php echo $row['NOMBRE']; ?>"><?php echo $row['NOMBRE']; ?></option>
-                                    <?php }
-                            }?>
-                                </select><br><br>
+                                
+                                
                                 <input type="submit" name="accion" value="<?php echo $accion ?>">
                                 
                             </form>  

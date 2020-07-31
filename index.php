@@ -3,23 +3,20 @@ include './Service/moduloService.php';
 
 
 $accion="Agregar";
-$nombre="";
-$genero="";
-$plataforma="";
-$precio="";   
-$codVideojuego=""; 
-$hidden="hidden";                      
+$codModulo="";
+$codRol="";
+                     
 //echo "Éxito: Se realizó una conexión apropiada a MySQL! La base de datos mi_bd es genial." . PHP_EOL;
 //echo "Información del host: " . mysqli_get_host_info($conection) . PHP_EOL;
-if (isset($_POST["nombre"])&&isset($_POST["genero"])&&isset($_POST["plataforma"])&&isset($_POST["precio"])&&$_POST["accion"]=="Agregar")
+if (isset($_POST["COD_MODULO"])&&isset($_POST["COD_ROL"])=="Agregar")
 {
-    insert($_POST["nombre"],$_POST["genero"],$_POST["plataforma"],$_POST["precio"]);
+    insertRolModulo($_POST["nombre"],$_POST["genero"],$_POST["plataforma"],$_POST["precio"]);
     
     
 }
-else if (isset($_POST["genero"])&&isset($_POST["plataforma"])&&isset($_POST["precio"])&&$_POST["accion"]=="Modificar"){
+else if ($_POST["COD_MODULO"])&&isset($_POST["COD_ROL"])&&$_POST["accion"]=="Modificar"){
 
-    modify($_POST["nombre"], $_POST["genero"], $_POST["plataforma"],$_POST["precio"],$_POST["codVideojuego"]);
+    modifyRolModulo($_POST["nombre"], $_POST["genero"], $_POST["plataforma"],$_POST["precio"],$_POST["codVideojuego"]);
 }
 if(isset($_GET["update"]))
 {
@@ -70,7 +67,8 @@ if(isset($_GET["delete"]))
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lista">Lista de videojuegos</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="./funcionalidad.php">Funcionalidad</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lista">Lista de Modulos</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#insertar"><?php echo $accion ?></a></li>
                     </ul>
                 </div>
@@ -105,7 +103,7 @@ if(isset($_GET["delete"]))
                             <?php
                             if(isset($_GET["segRol"]))
                             {
-                                $result = findSegModuloPorRol($_GET["segRol"]);
+                                $result = findSegModulo($_GET["segRol"]);
                                 if ($result->num_rows > 0) {
                                     while($row = $result->fetch_assoc()) {
                                     
@@ -130,41 +128,7 @@ if(isset($_GET["delete"]))
                 <img class="img-small" src="assets/img/ipad.png" alt="" />
             </div>
         </section>
-        <!-- Lista de Funcionalidades-->
-        <section class="about-section text-center" id="lista">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <h2 class="text-white mb-4">Lista de Funcionalidades</h2>
-                        <table class="table text-white-50 text-center table-bordered ">
-                            <tr>
-                                <td>Nombre</td>
-                                <td>URL Principal</td>
-                                <td>Descripcion</td>
-                                <td>Modificar</td>
-                                <td>Eliminar</td>
-                            </tr>
-                            <?php 
-                        $result = findAllFuncionalidades();
-                        if ($result->num_rows > 0) {
-                            // output data of each row
-                            while($row = $result->fetch_assoc()) {
-                                ?>
-                            <tr>
-                                <td><?php echo $row['NOMBRE']; ?></td>
-                                <td><?php echo $row['URL_PRINCIPAL']; ?></td>
-                                <td><?php echo $row['DESCRIPCION']; ?></td>
-                                <td><a href="index.php?update= <?php echo $row["cod_videojuego"];?>#insertar"><img class="img-small" src="assets/img/update.png" style="width:25px;height:25px;" alt="" /></a></td>
-                                <td><a href="index.php?delete= <?php echo $row["cod_videojuego"];?>"><img class="img-small" src="assets/img/delete.png" style="width:25px;height:25px;" alt="" /></a></td>
-                            </tr>
-                            <?php }
-                            }?>
-                        </table>
-                    </div>
-                </div>
-                <img class="img-small" src="assets/img/ipad.png" alt="" />
-            </div>
-        </section>
+        
         <!-- Innsertar modulo-->
         <section class="projects-section bg-light" id="insertar">
             <div class="container">
@@ -183,7 +147,7 @@ if(isset($_GET["delete"]))
                                     // output data of each row
                                     while($row = $result->fetch_assoc()) {
                                 ?>
-                                    <option value="<?php echo $row['NOMBRE']; ?>"><?php echo $row['NOMBRE']; ?></option>
+                                    <option value="<?php echo $row['COD_ROL']; ?>"><?php echo $row['NOMBRE']; ?></option>
                                     <?php }
                             }?>
                                 </select><br><br>
@@ -195,7 +159,7 @@ if(isset($_GET["delete"]))
                                     // output data of each row
                                     while($row = $result->fetch_assoc()) {
                                 ?>
-                                    <option value="<?php echo $row['NOMBRE']; ?>"><?php echo $row['NOMBRE']; ?></option>
+                                    <option value="<?php echo $row['COD_MODULO']; ?>"><?php echo $row['NOMBRE']; ?></option>
                                     <?php }
                             }?>
                                 </select><br><br>
