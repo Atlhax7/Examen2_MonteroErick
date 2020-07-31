@@ -1,5 +1,5 @@
 <?php
-include './Service/gameService.php';
+include './Service/moduloService.php';
 
 
 $accion="Agregar";
@@ -77,34 +77,83 @@ if(isset($_GET["delete"]))
             </div>
         </nav>
         <!-- Masthead-->
-        <!-- Lista de videojuegos-->
+        <!-- Lista de Modulos-->
         <section class="about-section text-center" id="lista">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 mx-auto">
-                        <h2 class="text-white mb-4">Lista de videojuegos</h2>
+                        <h2 class="text-white mb-4">Lista de Modulos activos</h2>
+                        <form name="forma" method="get" class="form" action="/Examen2_MonteroErick/index.php">
+                                <select id="segRol" name="segRol">
+                                <?php 
+                                $result = findSegRol();
+                                if ($result->num_rows > 0) {
+                                    // output data of each row
+                                    while($row = $result->fetch_assoc()) {
+                                ?>
+                                    <option value="<?php echo $row['NOMBRE']; ?>" a href="index.php?segRol= <?php echo $row["COD_ROL"];?>#insertar"><?php echo $row['NOMBRE']; ?></option>
+                                    <?php }
+                            }?>
+                                <input type="submit" name="accion" value="Seleccionar">
+                            
                         <table class="table text-white-50 text-center table-bordered ">
                             <tr>
-                                <td>Codigo</td>
+                           
+                                <td>Modulos</td>
+                                
+                            </tr>
+                            <?php
+                            if(isset($_GET["segRol"]))
+                            {
+                                $result = findSegModulo($_GET["segRol"]);
+                                if ($result->num_rows > 0) {
+                                    while($row = $result->fetch_assoc()) {
+                                    
+                                
+                            
+                            ?>
+                            <tr>
+                                <td><?php echo $row['Nombre']; ?></td>
+                                <td><?php echo $row['nombre']; ?></td>
+                                <td><?php echo $row['genero']; ?></td>
+                                <td><?php echo $row['plataforma']; ?></td>
+                                <td><?php echo $row['precio']; ?></td>
+                                <td><a href="index.php?update= <?php echo $row["cod_videojuego"];?>#insertar"><img class="img-small" src="assets/img/update.png" style="width:25px;height:25px;" alt="" /></a></td>
+                                <td><a href="index.php?delete= <?php echo $row["cod_videojuego"];?>"><img class="img-small" src="assets/img/delete.png" style="width:25px;height:25px;" alt="" /></a></td>
+                            </tr>
+                            <?php }
+                            }
+                        }?>
+                        </table>
+                    </div>
+                </div>
+                <img class="img-small" src="assets/img/ipad.png" alt="" />
+            </div>
+        </section>
+        <!-- Lista de Funcionalidades-->
+        <section class="about-section text-center" id="lista">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <h2 class="text-white mb-4">Lista de Funcionalidades</h2>
+                        <table class="table text-white-50 text-center table-bordered ">
+                            <tr>
                                 <td>Nombre</td>
-                                <td>Genero</td>
-                                <td>Plataforma</td>
-                                <td>Precio</td>
+                                <td>URL Principal</td>
+                                <td>Descripcion</td>
                                 <td>Modificar</td>
                                 <td>Eliminar</td>
                             </tr>
                             <?php 
-                        $result = findAll();
+                        $result = findAllFuncionalidades();
                         if ($result->num_rows > 0) {
                             // output data of each row
                             while($row = $result->fetch_assoc()) {
                                 ?>
                             <tr>
-                                <td><?php echo $row['cod_videojuego']; ?></td>
-                                <td><?php echo $row['nombre']; ?></td>
-                                <td><?php echo $row['genero']; ?></td>
-                                <td><?php echo $row['plataforma']; ?></td>
-                                <td><?php echo $row['precio']; ?></td>
+                                <td><?php echo $row['NOMBRE']; ?></td>
+                                <td><?php echo $row['URL_PRINCIPAL']; ?></td>
+                                <td><?php echo $row['DESCRIPCION']; ?></td>
                                 <td><a href="index.php?update= <?php echo $row["cod_videojuego"];?>#insertar"><img class="img-small" src="assets/img/update.png" style="width:25px;height:25px;" alt="" /></a></td>
                                 <td><a href="index.php?delete= <?php echo $row["cod_videojuego"];?>"><img class="img-small" src="assets/img/delete.png" style="width:25px;height:25px;" alt="" /></a></td>
                             </tr>
@@ -116,7 +165,7 @@ if(isset($_GET["delete"]))
                 <img class="img-small" src="assets/img/ipad.png" alt="" />
             </div>
         </section>
-        <!-- Projects-->
+        <!-- Innsertar modulo-->
         <section class="projects-section bg-light" id="insertar">
             <div class="container">
                 <!-- Featured Project Row-->
@@ -124,30 +173,34 @@ if(isset($_GET["delete"]))
                     <div class="col-xl-8 col-lg-7"><img class="img-fluid mb-3 mb-lg-0" src="assets/img/videogame.png" style="width:512px;height:512px;" alt="" /></div>
                     <div class="col-xl-4 col-lg-5">
                         <div class="featured-text text-center text-lg-left">
-                            <h4>Registro de videojuegos</h4>
+                            <h4>Registro de Modulos por rol</h4>
                             
-                            <form name="forma" method="post" class="form" action="/CRUDPHP/index.php">
-                                <input type="hidden" name="codVideojuego" value="<?php echo $codVideojuego ?>">
-                                <label for="nombre">Nombre:</label><br>
-                                <input type="text" id="nombre" name="nombre" value="<?php echo $nombre; ?>" required><br>
-                                <label for="genero">Genero:</label><br>
-                                <select id="genero" name="genero">
-                                    <option value="FPS">FPS</option>
-                                    <option value="Accion">Accion</option>
-                                    <option value="Estrategia">Estrategia</option>
-                                    <option value="Simulador">Simulador</option>
+                            <form name="forma" method="post" class="form" action="/Examen2_MonteroErick/index.php">
+                                <select id="segRol" name="segRol">
+                                <?php 
+                                $result = findSegRol();
+                                if ($result->num_rows > 0) {
+                                    // output data of each row
+                                    while($row = $result->fetch_assoc()) {
+                                ?>
+                                    <option value="<?php echo $row['NOMBRE']; ?>"><?php echo $row['NOMBRE']; ?></option>
+                                    <?php }
+                            }?>
                                 </select><br><br>
-                                <label for="plataforma">Plataforma:</label><br>
-                                <select id="plataforma" name="plataforma">
-                                    <option value="Xbox 360">Xbox 360</option>
-                                    <option value="PC">PC</option>
-                                    <option value="Play Station">Play Station</option>
-                                    <option value="Nintendo">Nintendo</option>
+                                <label for="segModulo">Modulo:</label><br>
+                                <select id="segModulo" name="segModulo">
+                                <?php 
+                                $result = findSegModulo();
+                                if ($result->num_rows > 0) {
+                                    // output data of each row
+                                    while($row = $result->fetch_assoc()) {
+                                ?>
+                                    <option value="<?php echo $row['NOMBRE']; ?>"><?php echo $row['NOMBRE']; ?></option>
+                                    <?php }
+                            }?>
                                 </select><br><br>
-                                <label for="precio">Precio:</label><br>
-                                <input type="text" id="precio" name="precio" value="<?php echo $precio; ?>" required pattern="[0-9.0]+"><br><br>
                                 <input type="submit" name="accion" value="<?php echo $accion ?>">
-                                <input type="button" name="cancelar" value="Cancelar" visibility="<?php echo $hidden?>" onclick="document.location='index.php'">
+                                
                             </form> 
 
                         </div>

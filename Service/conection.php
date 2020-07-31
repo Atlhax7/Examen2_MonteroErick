@@ -1,7 +1,7 @@
 <?php
 function getConection()
 {
-    $conection = mysqli_connect("127.0.0.1", "root", "", "videojuegos");
+    $conection = mysqli_connect("127.0.0.1", "root", "", "examen2");
 
     if (!$conection) {
         echo "Error: No se pudo conectar a MySQL.";

@@ -75,3 +75,5 @@ ALTER TABLE SEG_FUNCIONALIDAD ADD CONSTRAINT FK_FUNCIONALIDAD_A_MODULO FOREIGN K
 insert into SEG_ROL VALUES('ADMIN','ADMINISTRADOR');
 insert into SEG_ROL VALUES('DOCE','DOCENTE');
 insert into SEG_ROL VALUES('ALUM','ALUMNO');
+
+select * from seg_rol, rol_modulo, seg_modulo,seg_funcionalidad;
