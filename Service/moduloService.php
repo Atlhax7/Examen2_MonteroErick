@@ -73,11 +73,11 @@ function modify($nombre, $genero, $plataforma,$precio,$codVideojuego)
     $stmt->close();
 }
 
-function modifyRolModulo($cod_, $genero, $plataforma,$precio,$codVideojuego)
+function modifyRolModulo($codRol, $codModulo)
 {
     $conection = getConection();
-    $stmt = $conection->prepare("update videojuego set nombre=?,  genero=?,  plataforma=?, precio=? where cod_videojuego=?");
-    $stmt->bind_param("sssdi", $nombre, $genero, $plataforma,$precio,$codVideojuego);
+    $stmt = $conection->prepare("update ROL_MODULO set COD_ROL=?,  COD_MODULO=? where COD_ROL=? AND where COD_MODULO=?");
+    $stmt->bind_param("ssss", $codRol, $codModulo, $codRol,$codModulo);
     $stmt->execute();
     $stmt->close();
 }
@@ -94,6 +94,13 @@ function remove($codVideojuego)
 {
     $conection = getConection();
     $sql = "DELETE FROM videojuego WHERE cod_videojuego=".$codVideojuego;
+    $conection->query($sql);
+    $conection->close();
+}
+function removeRolModulo($CodRol)
+{
+    $conection = getConection();
+    $sql = "DELETE FROM videojuego WHERE cod_videojuego=".$codVideojuego."AND ";
     $conection->query($sql);
     $conection->close();
 }
