@@ -14,27 +14,25 @@ if (isset($_POST["COD_MODULO"])&&isset($_POST["COD_ROL"])=="Agregar")
     
     
 }
-else if ($_POST["COD_MODULO"])&&isset($_POST["COD_ROL"])&&$_POST["accion"]=="Modificar"){
+else if (isset($_POST["COD_MODULO"])&&isset($_POST["COD_ROL"])&&$_POST["accion"]=="Modificar"){
 
-    modifyRolModulo($_POST["nombre"], $_POST["genero"], $_POST["plataforma"],$_POST["precio"],$_POST["codVideojuego"]);
+    modifyRolModulo($_POST["COD_MODULO"], $_POST["COD_ROL"]);
 }
 if(isset($_GET["update"]))
 {
     $result = findByCod($_GET["update"]);
     if ($result->num_rows > 0) {
         $row1=$result->fetch_assoc();
-        $nombre=$row1["nombre"];
-        $genero=$row1["genero"];
-        $plataforma=$row1["plataforma"];
-        $precio=$row1["precio"];
-        $codVideojuego=$row1["cod_videojuego"];
+        $codModulo=$row1["nombre"];
+        $codRol=$row1["genero"];
+        
         $accion="Modificar";
         $hidden="";
     }
 }
-if(isset($_GET["delete"]))
+if(isset($_GET["delete"]),$_GET["segRol"])
 {
-    remove($_GET["delete"]);
+    remove($_GET["delete"],$_GET["segRol"]);
 }
 
 ?>
@@ -89,7 +87,7 @@ if(isset($_GET["delete"]))
                                     // output data of each row
                                     while($row = $result->fetch_assoc()) {
                                 ?>
-                                    <option value="<?php echo $row['NOMBRE']; ?>" a href="index.php?segRol= <?php echo $row["COD_ROL"];?>#insertar"><?php echo $row['NOMBRE']; ?></option>
+                                    <option value="<?php echo $row['COD_ROL']; ?>" a href="index.php?segRol= <?php echo $row["COD_ROL"];?>#insertar"><?php echo $row['NOMBRE']; ?></option>
                                     <?php }
                             }?>
                                 <input type="submit" name="accion" value="Seleccionar">
@@ -112,12 +110,8 @@ if(isset($_GET["delete"]))
                             ?>
                             <tr>
                                 <td><?php echo $row['Nombre']; ?></td>
-                                <td><?php echo $row['nombre']; ?></td>
-                                <td><?php echo $row['genero']; ?></td>
-                                <td><?php echo $row['plataforma']; ?></td>
-                                <td><?php echo $row['precio']; ?></td>
-                                <td><a href="index.php?update= <?php echo $row["cod_videojuego"];?>#insertar"><img class="img-small" src="assets/img/update.png" style="width:25px;height:25px;" alt="" /></a></td>
-                                <td><a href="index.php?delete= <?php echo $row["cod_videojuego"];?>"><img class="img-small" src="assets/img/delete.png" style="width:25px;height:25px;" alt="" /></a></td>
+                                <td><a href="index.php?update= <?php echo $row["COD_MODULO"];?>#insertar"><img class="img-small" src="assets/img/update.png" style="width:25px;height:25px;" alt="" /></a></td>
+                                <td><a href="index.php?delete= <?php echo $row["COD_MODULO"];?>"><img class="img-small" src="assets/img/delete.png" style="width:25px;height:25px;" alt="" /></a></td>
                             </tr>
                             <?php }
                             }

@@ -97,10 +97,10 @@ function remove($codVideojuego)
     $conection->query($sql);
     $conection->close();
 }
-function removeRolModulo($CodRol)
+function removeRolModulo($codModulo,$codRol)
 {
     $conection = getConection();
-    $sql = "DELETE FROM videojuego WHERE cod_videojuego=".$codVideojuego."AND ";
+    $sql = "DELETE FROM ROL_MODULO WHERE COD_ROL=".$codRol."AND COD_MODULO=".codModulo;
     $conection->query($sql);
     $conection->close();
 }
