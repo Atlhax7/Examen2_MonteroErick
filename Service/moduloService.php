@@ -8,6 +8,14 @@ function insert($nombre, $genero, $plataforma, $precio)
     $stmt->execute();
     $stmt->close();
 }
+function insertFuncionalidad($modulo, $nombre, $url, $descripcion)
+{
+    $conection = getConection();
+    $stmt = $conection->prepare("INSERT INTO seg_funcionalidad (nombre, genero, plataforma,precio) VALUES (?, ?, ?,?)");
+    $stmt->bind_param("ssss", $modulo, $url, $nombre, $descripcion);
+    $stmt->execute();
+    $stmt->close();
+}
 function insertModulo($rol, $modulo)
 {
     $conection = getConection();
@@ -27,10 +35,15 @@ function findSegRol()
     $conection = getConection();
     return $conection->query("SELECT * FROM seg_rol");;
 }
-function findSegModulo($codRol)
+function findSegModuloPorRol($codRol)
 {
     $conection = getConection();
-    return $conection->query("SELECT * FROM seg_modulo,rol_modulo WHERE seg_modulo.COD_MODULO=rol_modulo.COD_MODULO AND rol_modulo.COD_MODULO=".$codRol);;
+    return $conection->query("SELECT * FROM seg_modulo,rol_modulo WHERE SEG_MODULO.ESTADO=ACT AND seg_modulo.COD_MODULO=rol_modulo.COD_MODULO AND rol_modulo.COD_MODULO=".$codRol);;
+}
+function findSegModulo()
+{
+    $conection = getConection();
+    return $conection->query("SELECT * FROM seg_modulo");;
 }
 function findAllFuncionalidades()
 {
@@ -48,6 +61,14 @@ function modify($nombre, $genero, $plataforma,$precio,$codVideojuego)
     $conection = getConection();
     $stmt = $conection->prepare("update videojuego set nombre=?,  genero=?,  plataforma=?, precio=? where cod_videojuego=?");
     $stmt->bind_param("sssdi", $nombre, $genero, $plataforma,$precio,$codVideojuego);
+    $stmt->execute();
+    $stmt->close();
+}
+function modifyFuncionalidad($codmodulo, $url, $nombre,$descripcion,$codFuncionalidad)
+{
+    $conection = getConection();
+    $stmt = $conection->prepare("update  set COD_MODULO=?,  URL_PRINCIPAL=?,  NOMBRE=?, DESCRIPCION=? where COD_FUNCIONALIDAD=?");
+    $stmt->bind_param("sssdi", $codmodulo, $url, $nombre,$descripcion,$codFuncionalidad);
     $stmt->execute();
     $stmt->close();
 }
